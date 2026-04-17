@@ -3,27 +3,17 @@
 
 def cidr_to_netmask(cidr_num):
     # 1. 全体で32ビットの「1」と「0」の文字列を作る
-    # 例: /24 なら 1が24個、0が8個
-    ones = '1' * cidr_num
-    zeros = '0' * (32 - cidr_num)
-    binary_str = ones + zeros
+    binary_str = '1' *cidr_num + '0' * (32 - cidr_num)
     
     # 2. 8ビットずつに分割する
-    # 0-8文字目, 8-16文字目...と切り分ける => リスト
-    octets_binary = [
-        binary_str[0:8],
-        binary_str[8:16],
-        binary_str[16:24],
-        binary_str[24:32]
-    ]
+    # リスト内包表記
+    octets_binary = [binary_str[i:i+8] for i in range(0, 32, 8) ]
     
     # 3. 2進数の文字列を10進数の数値に変換する : binary => decimal
     # int(文字列, 2) を使うと2進数として解釈してくれます
-    octets_decimal = []
-    for b in octets_binary:
-        decimal_val = int(b, 2)
-        octets_decimal.append(str(decimal_val))
-    
+    # リスト内包表記
+    octets_decimal = [str(int(b, 2)) for b in octets_binary]
+        
     # 4. ドットで繋いで返す
     return ".".join(octets_decimal)
 
